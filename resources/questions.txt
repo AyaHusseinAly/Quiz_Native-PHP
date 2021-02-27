@@ -1,0 +1,29 @@
+Q: What is not a super global variable of the following : 
+A) $_SERVER
+B) $_GET
+C) $_POST
+D) $_PUT
+Ans: option4
+*Q: Getting a user IP address can be done by $_SERVER array.
+*Ans: option1
+Q: A function to check the existance of a variable : 
+A) empty
+B) isset
+C) is_set
+D) is_empty
+Ans: option2
+Q: A function to search an array : 
+A) array_merge
+B) in_array
+C) map_array
+D) is_array
+Ans: option2
+Q: A function to iterate an array applying a method to all its members: 
+A) array_merge
+B) in_array
+C) map_array
+D) is_array
+Ans: option3
+
+
+
