@@ -14,6 +14,6 @@ interface Exam_interface {
     public function load_exam_page($page);
     public function move_next();
     public function move_previous();
-    public function getQuestion_number();
+    public function  getNumberOfQuestions();
     public function getPage();
 }

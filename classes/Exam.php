@@ -1,5 +1,5 @@
 <?php
-
+ 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,7 +14,7 @@
 class Exam implements Exam_interface {
 
     private $url;
-    private $page;
+   // private $page;
     private $questions;
     private $user_answers;
     private $question_number;
@@ -23,51 +23,53 @@ class Exam implements Exam_interface {
     
     public function __construct() {
         $this->url = Helper::get_current_Page_URL();
-        $this->page = ($this->get_current_page_index() > 0) ? (int) $this->get_current_page_index() : 1;
         $this->questions = $this->get_questions();
-    }
-    function getQuestion_number() {
-        return count($this->questions);
     }
 
     function getNumberOfQuestions() {
         return count($this->questions);
     }
-        
+     
     function getPage() {
         return $this->page;
     }
 
     public function load_exam_page($page) {
-        if (isset($this->questions[$page - 1])) {
-            return $this->questions[$page - 1];
+        if (isset($this->questions[$page])) {
+            return $this->questions[$page];
         } else {
 
-            throw new Exception("Question doesn't exist");
+            throw new Exception("Question doesn't exist ");
         }
     }
 
     public function move_previous() {
-        $current_url = explode("?", $this->url)[0];
-        $previous_page = (int) $this->page - 1;
-        $previous_page = ($previous_page > 0) ? $previous_page : 1;
-        return $current_url . "?" . "page=$previous_page";
+       //$_SESSION['page']--; //Not working here :)
+       if(strpos($this->url,"?")!==false){
+            $url_parts = explode("?", $this->url);
+            return ($url_parts[0])."?dec=true";
+       }
+       else{
+            return ($this->url)."?dec=true";
+       }
+
     }
 
     public function move_next() {
-        $current_url = explode("?", $this->url)[0];
-        $next_page = (int) $this->page + 1;
+        //$_SESSION['page']++; //Not working here :)
+       if(strpos($this->url,"?")!==false){
+            $url_parts = explode("?", $this->url);
+            return ($url_parts[0])."?inc=true";
+       }
+       else{
+            return ($this->url)."?inc=true";
+       }
+        
 
-        return $current_url . "?" . "page=$next_page";
     }
 
     public function store_answer($ans){
         $this->user_answers=$ans;
-        /*
-        echo "<pre style='color:white'>";
-        print_r($this->user_answers);
-        echo "<pre>";
-        */
     }
     
     public function mark_exam(){
@@ -86,25 +88,7 @@ class Exam implements Exam_interface {
         return $mark;
     }
 
-    private function get_current_page_index() {
-
-        if(strpos($this->url,"?")!==false){
-            $url_parts = explode("?", $this->url);
-            $query_string = $url_parts[1];
-
-            if (!empty($query_string) || !strstr("page", $query_string)) {
-
-                $query_string_array = explode("=", $query_string);
-
-                return (int) $query_string_array[1];
-            } else
-                return 1;
-        }else
-            return 1;
-
-    }
-
-    private function get_questions() {
+    public function get_questions() {
         $lines = file(exam_file);
         $questions = array();
         foreach ($lines as $line) {
