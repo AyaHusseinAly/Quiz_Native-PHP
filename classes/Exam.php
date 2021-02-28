@@ -25,8 +25,11 @@ class Exam implements Exam_interface {
         $this->questions = $this->get_questions();
     }
 
-    function getNumberOfQuestions() {
+    public function getNumberOfQuestions() {
         return count($this->questions);
+    }
+    public function getUserAnswers() {
+        return ($this->user_answers);
     }
 
 /************************************* Navigation between Pages*******************************************/
@@ -110,7 +113,7 @@ class Exam implements Exam_interface {
 
 /****************************** For View Results Feature **********************************/    
     public function store_answer(){
-        echo "<pre>";print_r($_POST);echo "</pre>";
+        //echo "<pre>";print_r($_POST);echo "</pre>";
         if(isset($_POST['Q'])){
             $_SESSION['answers']['Q'.$_SESSION['page']]=$_POST['Q'];
         }
