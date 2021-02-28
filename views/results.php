@@ -7,7 +7,7 @@
 
 <html>    
     <body>
-        <div class="container mt-sm-5 my-1 " style="width:30%">
+        <div class="container mt-sm-5 my-1 " style="width:40%">
             <div class="d-flex flex-column">
                 <div class="question pt-2">  
                     <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">

@@ -14,14 +14,13 @@
 class Exam implements Exam_interface {
 
     private $url;
-   // private $page;
     private $questions;
     private $user_answers;
     private $question_number;
-  
-    
+   
     
     public function __construct() {
+        session_start();
         $this->url = Helper::get_current_Page_URL();
         $this->questions = $this->get_questions();
     }
@@ -29,22 +28,11 @@ class Exam implements Exam_interface {
     function getNumberOfQuestions() {
         return count($this->questions);
     }
-     
-    function getPage() {
-        return $this->page;
-    }
 
-    public function load_exam_page($page) {
-        if (isset($this->questions[$page])) {
-            return $this->questions[$page];
-        } else {
-
-            throw new Exception("Question doesn't exist ");
-        }
-    }
+/************************************* Navigation between Pages*******************************************/
 
     public function move_previous() {
-       //$_SESSION['page']--; //Not working here :)
+      // $_SESSION['page']--; //Not working here :)
        if(strpos($this->url,"?")!==false){
             $url_parts = explode("?", $this->url);
             return ($url_parts[0])."?dec=true";
@@ -52,7 +40,6 @@ class Exam implements Exam_interface {
        else{
             return ($this->url)."?dec=true";
        }
-
     }
 
     public function move_next() {
@@ -64,30 +51,36 @@ class Exam implements Exam_interface {
        else{
             return ($this->url)."?inc=true";
        }
-        
 
     }
 
-    public function store_answer($ans){
-        $this->user_answers=$ans;
-    }
-    
-    public function mark_exam(){
-        $mark=0;
-        $i=0;
-        foreach($this->questions as $q){
-            /*
-            var_dump($q->get_answer());
-            var_dump($this->user_answers[$i]);
-            */
-            if(($q->get_answer())==($this->user_answers[$i])){
-                $mark++;    
-            }
-            $i++;
+    public function getPage(){
+
+        if(!array_key_exists('page', $_SESSION)){
+            $_SESSION['page']=0;
         }
-        return $mark;
+        else{
+            if (isset($_GET['inc'])==true) { 
+                $_SESSION['page']++;
+            }
+    
+            if (isset($_GET['dec'])==true) { 
+                $_SESSION['page']--;
+            }
+        }  
+        return $_SESSION['page'];
+
     }
 
+    public function load_exam_page($page) {
+        if (isset($this->questions[$page])) {
+            return $this->questions[$page];
+        } else {
+
+            throw new Exception("Question doesn't exist ");
+        }
+    }
+/******************************** Read Exam Questions from file *************************************/
     public function get_questions() {
         $lines = file(exam_file);
         $questions = array();
@@ -105,18 +98,40 @@ class Exam implements Exam_interface {
                 $new_essayquestion = new EssayQuestion(str_replace("#", "", $line));
                 $questions[] = $new_essayquestion;
             } elseif (substr($line, 0, 3) === "Ans") {
-                //$Answer = str_replace("Ans: ", "", $line);
-                //$new_mcquestion->Add_Answer($Answer);
                 $new_mcquestion->Add_Answer(substr($line, 5, 7));
             } elseif (substr($line, 0, 4) === "*Ans") {
-                //$Answer = str_replace("*Ans: ", "", $line);
-                //$new_tofquestion->Add_Answer($Answer);
                 $new_tofquestion->Add_Answer(substr($line, 6, 7));             
             } else {
                 $new_mcquestion->Add_an_Option($line);
             }
         }
         return $questions;
+    }
+
+/****************************** For View Results Feature **********************************/    
+    public function store_answer(){
+        
+        if(isset($_POST['option1'])){$_SESSION['answers'][]="option1";}
+        if(isset($_POST['option2'])){$_SESSION['answers'][]="option2";}
+        if(isset($_POST['option3'])){$_SESSION['answers'][]="option3";}
+        if(isset($_POST['option4'])){$_SESSION['answers'][]="option4";}
+
+        if(isset($_SESSION['answers'])){
+            $this->user_answers=$_SESSION['answers'];
+        }
+       
+    }
+    
+    public function mark_exam(){
+        $mark=0;
+        $i=0;
+        foreach($this->questions as $q){
+            if(($q->get_answer())==($this->user_answers[$i])){
+                $mark++;    
+            }
+            $i++;
+        }
+        return $mark;
     }
 
 }
