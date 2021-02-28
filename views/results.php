@@ -12,7 +12,7 @@
             <div class="d-flex flex-column">
                 <div class=" pt-2  ">  
                     <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                        <h2>you got <span> <?php echo  $exam->mark_exam();   ?>/ <?php echo  $exam->getNumberOfQuestions();   ?></span> Marks</h2>
+                        <h2>you got <span> <?php echo  $exam->mark_exam();   ?>/ <?php echo  $exam->getNumberOfQuestions();   ?></span> Marks</h2><p>correct answers are shown below</p>
                     </div>
                    <?php  
                    $c=0;
@@ -32,7 +32,7 @@
                             $i=0;    
                             foreach($current_question->get_options() as $option) {
                                 $i++;?>
-                            <label class="options"><?php echo $option;   ?> <input type="radio" value="option<?php echo $i;?>" name="Q"> <span class="checkmark"></span> </label>
+                            <label class="options"><?php echo $option;   ?> <input type="radio"  <?php if($current_question->get_answer()=="option".$i){?>checked="checked" <?php }else{?> disabled <?php } ?> value="option<?php echo $i;?>" name="Q<?php echo $c ?>" > <span class="checkmark"></span> </label>
                             <?php } } ?>   
                         </div>
                     <div>    

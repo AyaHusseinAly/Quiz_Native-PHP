@@ -2,7 +2,7 @@
 
 require_once "autoload.php";
 try {  
-        
+  
     $exam = new Exam();
     $current_page=$exam->getPage();
     $exam->store_answer();
