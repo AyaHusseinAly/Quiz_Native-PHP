@@ -12,11 +12,11 @@ try {
             exit();
         } 
         else if ($current_page== $exam->getNumberOfQuestions()+1) {
-            $questions=$exam->get_questions();
+            $questions=$exam->get_autoEvaluated_questionsArr();
             include_once("views/results.php");
             exit();
         }else {
-            $questions=$exam->get_questions();
+            $questions=$exam->get_questionsArr();
             $current_question = $questions[$current_page];
         }
   

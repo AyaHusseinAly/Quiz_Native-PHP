@@ -20,7 +20,7 @@ class TrueOrFalseQuestion implements Question_interface {
         $this->question = $question;
         $this->options = array("True","False");
     }
-    
+
     function Add_Answer($ans) {
         $this->answer = $ans;
     }

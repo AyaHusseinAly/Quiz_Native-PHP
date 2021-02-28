@@ -1,20 +1,10 @@
 <?php
- 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- * Description of exam
- *
- * @author memad
- */
 class Exam implements Exam_interface {
 
     private $url;
     private $questions;
+    private $auto_evaluated_questions;
     private $user_answers;
     private $question_number;
    
@@ -28,8 +18,19 @@ class Exam implements Exam_interface {
     public function getNumberOfQuestions() {
         return count($this->questions);
     }
+
+    public function getNumberOf_autoEvaluatedQuestions() {
+        return count($this->auto_evaluated_questions);
+    }
+
     public function getUserAnswers() {
         return ($this->user_answers);
+    }
+    public function get_questionsArr() {
+        return ($this->questions);
+    }
+    public function get_autoEvaluated_questionsArr() {
+        return ($this->auto_evaluated_questions);
     }
 
 /************************************* Navigation between Pages*******************************************/
@@ -84,22 +85,23 @@ class Exam implements Exam_interface {
         }
     }
 /******************************** Read Exam Questions from file *************************************/
-    public function get_questions() {
+   private function get_questions() {
         $lines = file(exam_file);
         $questions = array();
         foreach ($lines as $line) {
-
             if (substr($line, 0, 1) === "Q") {
                 if (isset($new_mcquestion)) {
                     $questions[] = $new_mcquestion;
+                    $this->auto_evaluated_questions[]=$new_mcquestion;
                 }
                 $new_mcquestion = new MCQuestion($line);
             } elseif (substr($line, 0, 2) === "*Q") {
                 $new_tofquestion = new TrueOrFalseQuestion(str_replace("*", "", $line));
                 $questions[] = $new_tofquestion;
+                $this->auto_evaluated_questions[]=$new_tofquestion;
             } elseif (substr($line, 0, 1) === "#") {
                 $new_essayquestion = new EssayQuestion(str_replace("#", "", $line));
-                $questions[] = $new_essayquestion;
+                $questions[] = $new_essayquestion;    
             } elseif (substr($line, 0, 3) === "Ans") {
                 $new_mcquestion->Add_Answer(substr($line, 5, 7));
             } elseif (substr($line, 0, 4) === "*Ans") {
@@ -127,7 +129,7 @@ class Exam implements Exam_interface {
         $mark=0;
         $i=0;
         foreach($this->user_answers as $k => $v){
-            if((($this->questions[$i])->get_answer())==$v){
+            if((($this->auto_evaluated_questions[$i])->get_answer())==$v){
                 $mark++;    
             }
             $i++;

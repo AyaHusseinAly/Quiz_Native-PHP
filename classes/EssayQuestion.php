@@ -9,9 +9,7 @@ class EssayQuestion implements Question_interface {
         $this->question = $question;
         $this->options = array();
     }
-    
-    
-    
+       
     function get_question() {
         return $this->question;
     }

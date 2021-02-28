@@ -12,14 +12,15 @@
             <div class="d-flex flex-column">
                 <div class=" pt-2  ">  
                     <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                        <h2>you got <span> <?php echo  $exam->mark_exam();   ?>/ <?php echo  $exam->getNumberOfQuestions();   ?></span> Marks</h2><p>correct answers are shown below</p>
+                        <h2>you got <span> <?php echo  $exam->mark_exam();   ?>/ <?php echo  $exam->getNumberOf_autoEvaluatedQuestions(); ?></span> Marks</h2><p>correct answers are shown below</p><p><span>Note:</span>Essay Questions are not auto-evaluated</p>
                     </div>
                    <?php  
                    $c=0;
+                   $keys = array_keys( $exam->getUserAnswers());
                    foreach($questions as $current_question) { ?>
                     <div class="container mt-sm-5 my-2 " style="background-color:#333;">
                         <div class="py-2 h5">
-                        <?php if((($exam->getUserAnswers())['Q'.($c+1)])==($current_question->get_answer())){?>
+                        <?php if((($exam->getUserAnswers())[$keys[$c]])==($current_question->get_answer())){?>
                             <i class="fas fa-check-circle" style="color:#21bf73"></i>
                         <?php }else{ ?>
                             <i class="fas fa-times-circle" style="color:#E14D43"></i>

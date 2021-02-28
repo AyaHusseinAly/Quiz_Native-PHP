@@ -11,7 +11,7 @@
                 $i++;?>
             <label class="options"><?php echo $option;   ?> <input type="radio" value="option<?php echo $i;?>" name="Q"> <span class="checkmark"></span> </label>
             <?php } }else{?>
-            <textarea style="border-radius:10px;border:2px solid #21bf73" rows="6" cols="47"></textarea>    
+            <textarea style="border-radius:10px;border:2px solid #21bf73" rows="6" cols="43"></textarea>    
             <?php } ?>
         </div>
     </div>

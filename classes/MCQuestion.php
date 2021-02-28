@@ -20,7 +20,7 @@ class MCQuestion {
     public function __construct($question){
         $this->question = $question;
     }
-    
+
     function Add_Answer($ans) {
         $this->answer = $ans;
     }  
