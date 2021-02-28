@@ -9,7 +9,7 @@
             $i=0;    
             foreach($current_question->get_options() as $option) {
                 $i++;?>
-            <label class="options"><?php echo $option;   ?> <input type="radio" name="option<?php echo $i;?>"> <span class="checkmark"></span> </label>
+            <label class="options"><?php echo $option;   ?> <input type="radio" value="option<?php echo $i;?>" name="Q"> <span class="checkmark"></span> </label>
             <?php } }else{?>
             <textarea style="border-radius:10px;border:2px solid #21bf73" rows="6" cols="47"></textarea>    
             <?php } ?>

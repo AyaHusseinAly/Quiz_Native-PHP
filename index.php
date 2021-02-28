@@ -12,7 +12,7 @@ try {
             exit();
         } 
         else if ($current_page== $exam->getNumberOfQuestions()+1) {
-        
+            $questions=$exam->get_questions();
             include_once("views/results.php");
             exit();
         }else {

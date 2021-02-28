@@ -110,12 +110,10 @@ class Exam implements Exam_interface {
 
 /****************************** For View Results Feature **********************************/    
     public function store_answer(){
-        
-        if(isset($_POST['option1'])){$_SESSION['answers'][]="option1";}
-        if(isset($_POST['option2'])){$_SESSION['answers'][]="option2";}
-        if(isset($_POST['option3'])){$_SESSION['answers'][]="option3";}
-        if(isset($_POST['option4'])){$_SESSION['answers'][]="option4";}
-
+        echo "<pre>";print_r($_POST);echo "</pre>";
+        if(isset($_POST['Q'])){
+            $_SESSION['answers']['Q'.$_SESSION['page']]=$_POST['Q'];
+        }
         if(isset($_SESSION['answers'])){
             $this->user_answers=$_SESSION['answers'];
         }
@@ -125,13 +123,14 @@ class Exam implements Exam_interface {
     public function mark_exam(){
         $mark=0;
         $i=0;
-        foreach($this->questions as $q){
-            if(($q->get_answer())==($this->user_answers[$i])){
+        foreach($this->user_answers as $k => $v){
+            if((($this->questions[$i])->get_answer())==$v){
                 $mark++;    
             }
             $i++;
         }
         return $mark;
+        
     }
 
 }
