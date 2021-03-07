@@ -12,7 +12,6 @@ B) isset
 C) is_set
 D) is_empty
 Ans: option2
-#Q: Explain the need of interfaces.
 Q: A function to search an array : 
 A) array_merge
 B) in_array

@@ -15,29 +15,32 @@
                         <h2>you got <span> <?php echo  $exam->mark_exam();   ?>/ <?php echo  $exam->getNumberOf_autoEvaluatedQuestions(); ?></span> Marks</h2><p>correct answers are shown below</p><p><span>Note:</span>Essay Questions are not auto-evaluated</p>
                     </div>
                    <?php  
-                   $c=0;
-                   $keys = array_keys( $exam->getUserAnswers());
-                   foreach($questions as $current_question) { ?>
+                   $c=0;$k=0;
+                   $a=$exam->getUserAnswers();
+                   //$keys = array_keys( $exam->getUserAnswers());
+                   foreach($questions as $q) { ?>
                     <div class="container mt-sm-5 my-2 " style="background-color:#333;">
                         <div class="py-2 h5">
-                        <?php if((($exam->getUserAnswers())[$keys[$c]])==($current_question->get_answer())){?>
+                        <?php if(array_key_exists('Q'.($k+1),$a)){ 
+                            if($a['Q'.($k+1)]==($q->get_answer())){ ?>
                             <i class="fas fa-check-circle" style="color:#21bf73"></i>
                         <?php }else{ ?>
                             <i class="fas fa-times-circle" style="color:#E14D43"></i>
-                        <?php } ?> 
-                        <b><?php echo $current_question->get_question();   ?> ?</b>
+                        <?php }  } else{ ?>
+                            <i class="fas fa-times-circle" style="color:#E14D43"></i>
+                        <b><?php } echo $q->get_question();   ?> </b>
                         </div>
                         <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
                             <?php 
-                            if(!empty($current_question->get_options())){
+                            if(!empty($q->get_options())){
                             $i=0;    
-                            foreach($current_question->get_options() as $option) {
+                            foreach($q->get_options() as $option) {
                                 $i++;?>
-                            <label class="options"><?php echo $option;   ?> <input type="radio"  <?php if($current_question->get_answer()=="option".$i){?>checked="checked" <?php }else{?> disabled <?php } ?> value="option<?php echo $i;?>" name="Q<?php echo $c ?>" > <span class="checkmark"></span> </label>
+                            <label class="options"><?php echo $option;   ?> <input type="radio"  <?php if($q->get_answer()=="option".$i){?>checked="checked" <?php }else{?> disabled <?php } ?> value="option<?php echo $i;?>" name="Q<?php echo $k ?>" > <span class="checkmark"></span> </label>
                             <?php } } ?>   
                         </div>
                     <div>    
-                        <?php $c++; }  ?> 
+                        <?php  $k++;}  ?> 
                     
                 </div>
 

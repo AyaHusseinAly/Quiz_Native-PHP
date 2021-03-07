@@ -5,7 +5,7 @@ class Exam implements Exam_interface {
     private $url;
     private $questions;
     private $auto_evaluated_questions;
-    private $user_answers;
+    private $user_answers=array();
     private $question_number;
    
     
@@ -13,6 +13,7 @@ class Exam implements Exam_interface {
         session_start();
         $this->url = Helper::get_current_Page_URL();
         $this->questions = $this->get_questions();
+    
     }
 
     public function getNumberOfQuestions() {
@@ -42,7 +43,9 @@ class Exam implements Exam_interface {
             return ($url_parts[0])."?dec=true";
        }
        else{
+           if($_SESSION['page']!=0){
             return ($this->url)."?dec=true";
+           }
        }
     }
 
@@ -115,22 +118,28 @@ class Exam implements Exam_interface {
 
 /****************************** For View Results Feature **********************************/    
     public function store_answer(){
-        //echo "<pre>";print_r($_POST);echo "</pre>";
+       
         if(isset($_POST['Q'])){
             $_SESSION['answers']['Q'.$_SESSION['page']]=$_POST['Q'];
         }
+
         if(isset($_SESSION['answers'])){
             $this->user_answers=$_SESSION['answers'];
+            echo "<pre style='color:green'>";print_r($_POST);echo "</pre>";
+            echo "<pre style='color:green'>";print_r($_SESSION['answers']);echo "</pre>";
         }
+  
        
     }
     
     public function mark_exam(){
         $mark=0;
         $i=0;
-        foreach($this->user_answers as $k => $v){
-            if((($this->auto_evaluated_questions[$i])->get_answer())==$v){
-                $mark++;    
+        foreach($this->auto_evaluated_questions as $q){
+            if(array_key_exists('Q'.($i+1), $this->user_answers)){
+                if(($q->get_answer())==$this->user_answers['Q'.($i+1)]){
+                    $mark++;    
+                }
             }
             $i++;
         }
